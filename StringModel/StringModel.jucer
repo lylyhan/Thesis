@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="ez6eyY" name="StringModel" projectType="audioplug" jucerVersion="5.4.5"
+              pluginName="Stringmodel" pluginManufacturer="THESIS" pluginCharacteristicsValue="pluginIsSynth,pluginProducesMidiOut,pluginWantsMidiIn"
+              pluginFormats="buildAU,buildVST3" companyName="THESIS">
+  <MAINGROUP id="RvdlOT" name="StringModel">
+    <GROUP id="{1E368382-AFE3-B851-6460-B81F306FAB88}" name="Source">
+      <FILE id="Jqe2qa" name="PluginProcessor.cpp" compile="1" resource="0"
+            file="Source/PluginProcessor.cpp"/>
+      <FILE id="UrgEKj" name="PluginProcessor.h" compile="0" resource="0"
+            file="Source/PluginProcessor.h"/>
+      <FILE id="qb5Q4m" name="PluginEditor.cpp" compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+      <FILE id="eL5b01" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      <FILE id="Y2PmRu" name="Customize.cpp" compile="1" resource="0" file="Source/Customize.cpp"/>
+      <FILE id="GGXEv5" name="Customize.h" compile="0" resource="0" file="Source/Customize.h"/>
+      <FILE id="dCh6Jz" name="SynthSound.h" compile="0" resource="0" file="Source/SynthSound.h"/>
+      <FILE id="SnWXSu" name="SynthVoice.h" compile="0" resource="0" file="Source/SynthVoice.h"/>
+      <FILE id="L1QUSV" name="theString.cpp" compile="1" resource="0" file="Source/theString.cpp"/>
+      <FILE id="DRfynL" name="theString.h" compile="0" resource="0" file="Source/theString.h"/>
+    </GROUP>
+  </MAINGROUP>
+  <EXPORTFORMATS>
+    <XCODE_MAC targetFolder="Builds/MacOSX">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug"/>
+        <CONFIGURATION isDebug="0" name="Release"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="../Documents/music_tech/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../Documents/music_tech/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../Documents/music_tech/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../Documents/music_tech/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../Documents/music_tech/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../Documents/music_tech/JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="../Documents/music_tech/JUCE/modules"/>
+        <MODULEPATH id="juce_cryptography" path="../Documents/music_tech/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../Documents/music_tech/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../Documents/music_tech/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../Documents/music_tech/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../Documents/music_tech/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../Documents/music_tech/JUCE/modules"/>
+        <MODULEPATH id="juce_opengl" path="../Documents/music_tech/JUCE/modules"/>
+      </MODULEPATHS>
+    </XCODE_MAC>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"
+            useGlobalPath="1"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_cryptography" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_opengl" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+  </MODULES>
+  <LIVE_SETTINGS>
+    <OSX/>
+  </LIVE_SETTINGS>
+  <JUCEOPTIONS JUCE_VST3_CAN_REPLACE_VST2="0" JUCE_STRICT_REFCOUNTEDPOINTER="1"/>
+</JUCERPROJECT>
