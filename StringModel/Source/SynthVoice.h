@@ -57,6 +57,8 @@ public:
         }
         //1-D string
         if(dim==0){
+            //need sigma, omega
+            /*
             deff(1);
             getf(1);
             
@@ -64,6 +66,12 @@ public:
             getw1d();
             getK1d();
             findmax1d();
+            */
+            ///////////////////the difference eq implementation///////////////
+            getsigma1d();
+            getw1d();
+
+            
         }
         //3-D drum
         if(dim==2){
@@ -124,7 +132,7 @@ public:
         maxh=h;
     }
     
-    
+  
     //this function synthesize signalvalue at each sample
     double finaloutput(int sample)
     {
@@ -152,7 +160,7 @@ public:
         //1-D
         else if(dim==0)
         {
-            
+            /*
             for(int i=0;i<m1;i++)
             {
                 if(nsamp==0){
@@ -164,6 +172,21 @@ public:
                 
                 h+=k1d[i]*decayampn1[i]*sin(omega1d[i]*t);
             }
+             */
+            //this is the difference eq version of implementation
+            for(int i=0;i<m1;i++)
+            {
+                float root = (pow(sigma1d[i],2)+pow(omega1d[i],2));
+                h+=xbuffer[2]+2*sigma[i]/root*ybuffer[1]-ybuffer[2]/root;
+            }
+            //update buffers
+            ybuffer[2] = ybuffer[1];
+            ybuffer[1] = ybuffer[0];
+            ybuffer[0] = h;
+            xbuffer[2] = xbuffer[1];
+            xbuffer[1] = xbuffer[0];
+            xbuffer[0] = 0;
+            std::cout<<"h "<<h<<" "<<xbuffer[2]<<" "<<pow(sigma1d[3],2)<<" "<<pow(omega1d[3],2)<<"  "<<ybuffer[2]<<" "<<ybuffer[1]<<" "<<ybuffer[0]<<"\n";
         }
         //3-D
         else
@@ -481,7 +504,7 @@ public:
             
             //put the synthesized drum sound here
             double drumSound=finaloutput(sample);
-            
+            std::cout<<"drumSound "<<drumSound<<"\n";
             for(int channel=0;channel<outputBuffer.getNumChannels();++channel)
             {
                 
@@ -586,4 +609,15 @@ private:
     float fx3[301];
     //double drumSound[512];
     double gain;
+    
+    
+    //circular buffers! [t,t-1,t-2]
+    float ybuffer[3] = {0.0, 0.0, 0.0};
+    float xbuffer[3] = {0.5, 0.0, 0.0};
+    //pointers for buffers!
+    int yread,ywrite;
+    int xread,xwrite;
+    
+    
+    
 };
