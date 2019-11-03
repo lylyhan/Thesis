@@ -15,6 +15,8 @@
 #include <math.h>       /* pow */
 #include <algorithm>
 #include<array>
+#include <complex>
+using namespace std;
 
 #define MAX_M1  5
 #define MAX_M2  5
@@ -160,6 +162,7 @@ public:
         //1-D
         else if(dim==0)
         {
+            //std::complex<float> imaginary(0,1);
             /*
             for(int i=0;i<m1;i++)
             {
@@ -176,8 +179,8 @@ public:
             //this is the difference eq version of implementation
             for(int i=0;i<m1;i++)
             {
-                float root = (pow(sigma1d[i],2)+pow(omega1d[i],2));
-                h+=xbuffer[2]+2*sigma[i]/root*ybuffer[1]-ybuffer[2]/root;
+                //float root = (pow(sigma1d[i],2)+pow(omega1d[i],2));
+                h+=2*expsigma1d[i]*cosomega1d[i]*ybuffer[1]-expsigma1d[i]*ybuffer[2]-1/omega1d[i]*xbuffer[0]+expsigma1d[i]*xbuffer[1]/omega1d[i];
             }
             //update buffers
             ybuffer[2] = ybuffer[1];
@@ -186,7 +189,7 @@ public:
             xbuffer[2] = xbuffer[1];
             xbuffer[1] = xbuffer[0];
             xbuffer[0] = 0;
-            std::cout<<"h "<<h<<" "<<xbuffer[2]<<" "<<pow(sigma1d[3],2)<<" "<<pow(omega1d[3],2)<<"  "<<ybuffer[2]<<" "<<ybuffer[1]<<" "<<ybuffer[0]<<"\n";
+            std::cout<<"h "<<h<<" "<<xbuffer[2]<<" "<<xbuffer[0]<<"  "<<ybuffer[2]<<" "<<ybuffer[1]<<" "<<ybuffer[0]<<"\n";
         }
         //3-D
         else
@@ -241,6 +244,7 @@ public:
         for(int i=0;i<m1;i++)
         {
             sigma1d[i]=sigma1*(1+fp*(pow(i+1,2)-1));
+            expsigma1d[i]=exp(sigma1d[i]);
             decayamp1[i]=exp(sigma1d[i]/sr);
         }
     }
@@ -421,6 +425,7 @@ public:
             
             float interm=pow(i+1,2);//M^2
             omega1d[i]= sqrt(pow(fd*fomega*interm,2)+interm*(pow(sigma*(1-fp),2)+pow(fomega,2)*(1-pow(fd,2)))-pow(sigma*(1-fp),2));
+            cosomega1d[i] = cos(omega1d[i]);
             
             
         }
@@ -456,6 +461,7 @@ public:
         level=velocity;
         //map keyboard to frequency
         frequency= MidiMessage::getMidiNoteInHertz(midiNoteNumber);
+        xbuffer[0]=1;
     };
     
     //==================================
@@ -587,6 +593,7 @@ private:
     float k[MAX_M1*MAX_M2];//m1*m2
     float omega[25];
     float sigma[25];
+   
     float decayamp1[MAX_M1];
     float decayampn1[MAX_M1];
     float decayamp[25];
@@ -597,8 +604,11 @@ private:
     float k1d[MAX_M1];
     float omega3d[125];
     float omega1d[MAX_M1];
+   
     float sigma3d[125];
     float sigma1d[MAX_M1];
+    float expsigma1d[MAX_M1];
+    float cosomega1d[MAX_M1];
     float f1[5];//m1
     float f2[5];//m2
     float f3[5];//m3
@@ -609,6 +619,7 @@ private:
     float fx3[301];
     //double drumSound[512];
     double gain;
+    
     
     
     //circular buffers! [t,t-1,t-2]
