@@ -24,7 +24,7 @@ public:
     void paint (Graphics&) override;
     void resized() override;
     float getsliderval(int seq);
-
+    void changeGUI(int dim);
 private:
     Slider tauSlider;
     //Slider omegaSlider;

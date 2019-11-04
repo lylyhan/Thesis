@@ -26,5 +26,5 @@ private:
     //Rectangle<float> Mystring2;
     StringModelAudioProcessor& processor;
     float l,diameter,Rho;
-   
+    int Tr, Tg, Tb;
 };

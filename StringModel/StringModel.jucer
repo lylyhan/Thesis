@@ -19,6 +19,13 @@
       <FILE id="L1QUSV" name="theString.cpp" compile="1" resource="0" file="Source/theString.cpp"/>
       <FILE id="DRfynL" name="theString.h" compile="0" resource="0" file="Source/theString.h"/>
     </GROUP>
+    <GROUP id="{AE508F71-1310-BC3A-3C99-8B01504ECB48}" name="Assets">
+      <FILE id="BNFvyr" name="FFF_Tusj.ttf" compile="0" resource="1" file="../../../../Downloads/FFF-Tusj/FFF_Tusj.ttf"/>
+      <FILE id="xcpARq" name="Ubuntu_L.ttf" compile="0" resource="1" file="../../../../Downloads/ubuntu/Ubuntu_L.ttf"/>
+      <FILE id="cmhH1U" name="Reey_Regular.otf" compile="0" resource="1"
+            file="../../../../Downloads/reey/Reey_Regular.otf"/>
+      <FILE id="J1sDYs" name="Amagro_bold.ttf" compile="0" resource="1" file="../../../../Downloads/amagro/Amagro_bold.ttf"/>
+    </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds/MacOSX">
