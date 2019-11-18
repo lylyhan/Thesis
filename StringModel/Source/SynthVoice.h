@@ -244,7 +244,7 @@ public:
         for(int i=0;i<m1;i++)
         {
             sigma1d[i]=sigma1*(1+fp*(pow(i+1,2)-1));
-            expsigma1d[i]=exp(sigma1d[i]);
+            expsigma1d[i]=exp(sigma1d[i]/sr);
             decayamp1[i]=exp(sigma1d[i]/sr);
         }
     }
@@ -425,7 +425,7 @@ public:
             
             float interm=pow(i+1,2);//M^2
             omega1d[i]= sqrt(pow(fd*fomega*interm,2)+interm*(pow(sigma*(1-fp),2)+pow(fomega,2)*(1-pow(fd,2)))-pow(sigma*(1-fp),2));
-            cosomega1d[i] = cos(omega1d[i]);
+            cosomega1d[i] = cos(omega1d[i]/sr);
             
             
         }
