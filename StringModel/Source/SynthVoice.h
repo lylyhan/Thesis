@@ -135,92 +135,7 @@ public:
     }
     
   
-    //this function synthesize signalvalue at each sample
-    double finaloutput(int sample)
-    {
-        float h=0;
-        //2-D
-        if(dim==1)
-        {
-            //sum up to mode m1 and mode m2
-            for(int i=0;i<m1;i++)
-            {
-                for(int j=0;j<m2;j++)
-                {
-                    //designate the exponential envelope
-                    if(nsamp==0){
-                        decayampn[i*m1+j]=decayamp[i*m1+j];
-                    }
-                    else{
-                        decayampn[i*m1+j]*=decayamp[i*m1+j];
-                    }
-                    //synthesize the sound at time t
-                    h+=k[i*m1+j]*decayampn[i*m1+j]*sin(omega[i*m1+j]*t);
-                }
-            }
-        }
-        //1-D
-        else if(dim==0)
-        {
-            //std::complex<float> imaginary(0,1);
-            /*
-            for(int i=0;i<m1;i++)
-            {
-                if(nsamp==0){
-                    decayampn1[i]=decayamp1[i];
-                }
-                else{
-                    decayampn1[i]*=decayamp1[i];
-                }
-                
-                h+=k1d[i]*decayampn1[i]*sin(omega1d[i]*t);
-            }
-             */
-            //this is the difference eq version of implementation
-            for(int i=0;i<m1;i++)
-            {
-                //float root = (pow(sigma1d[i],2)+pow(omega1d[i],2));
-                h+=2*expsigma1d[i]*cosomega1d[i]*ybuffer[1]-expsigma1d[i]*ybuffer[2]-1/omega1d[i]*xbuffer[0]+expsigma1d[i]*xbuffer[1]/omega1d[i];
-            }
-            //update buffers
-            ybuffer[2] = ybuffer[1];
-            ybuffer[1] = ybuffer[0];
-            ybuffer[0] = h;
-            xbuffer[2] = xbuffer[1];
-            xbuffer[1] = xbuffer[0];
-            xbuffer[0] = 0;
-            std::cout<<"h "<<h<<" "<<xbuffer[2]<<" "<<xbuffer[0]<<"  "<<ybuffer[2]<<" "<<ybuffer[1]<<" "<<ybuffer[0]<<"\n";
-        }
-        //3-D
-        else
-        {
-            for(int i=0;i<m1;i++)
-            {
-                for(int j=0;j<m2;j++)
-                {
-                    for(int m=0;m<m3;m++)
-                    {
-                        if(nsamp==0){
-                            decayampn3[i*m1+j*m2+m]=decayamp3[i*m1+j*m2+m];
-                        }
-                        else{
-                            decayampn3[i*m1+j*m2+m]*=decayamp3[i*m1+j*m2+m];
-                        }
-                        h+=k3d[i*m1+j*m2+m]*decayampn3[i*m2+j*m2+m]*sin(omega3d[i*m1+j*m2+m]*t);
-                    }
-                }
-                
-            }
-        }
-        //scale the output
-        output=h/maxh;
-        if(trig!=0)//if note is pressed, start counting time samples
-        {
-            t+=1/sr;//t advancing one sample
-            nsamp+=1;
-        }
-        return double(output);
-    }
+   
     
     //intermediate variables
     //sigma
@@ -461,7 +376,10 @@ public:
         level=velocity;
         //map keyboard to frequency
         frequency= MidiMessage::getMidiNoteInHertz(midiNoteNumber);
-        xbuffer[0]=1;
+        //xbuffer[0]=1.0;
+        xbuf0 = 1.0;
+        //std::cout<<"i hit "<<xbuffer[0]<<"\n";
+        
     };
     
     //==================================
@@ -479,6 +397,102 @@ public:
     {
         
     };
+    
+    //this function synthesize signalvalue at each sample
+    double finaloutput(int sample)
+    {
+        float h=0;
+        //2-D
+        if(dim==1)
+        {
+            //sum up to mode m1 and mode m2
+            for(int i=0;i<m1;i++)
+            {
+                for(int j=0;j<m2;j++)
+                {
+                    //designate the exponential envelope
+                    if(nsamp==0){
+                        decayampn[i*m1+j]=decayamp[i*m1+j];
+                    }
+                    else{
+                        decayampn[i*m1+j]*=decayamp[i*m1+j];
+                    }
+                    //synthesize the sound at time t
+                    h+=k[i*m1+j]*decayampn[i*m1+j]*sin(omega[i*m1+j]*t);
+                }
+            }
+            //std::cout<<"output 2d "<<h/maxh<<"\n";
+        }
+        //1-D
+        else if(dim==0)
+        {
+            //maxh = 1.0;
+            //std::complex<float> imaginary(0,1);
+            /*
+             for(int i=0;i<m1;i++)
+             {
+             if(nsamp==0){
+             decayampn1[i]=decayamp1[i];
+             }
+             else{
+             decayampn1[i]*=decayamp1[i];
+             }
+             
+             h+=k1d[i]*decayampn1[i]*sin(omega1d[i]*t);
+             }
+             */
+            //this is the difference eq version of implementation
+            for(int i=0;i<m1;i++)
+            {
+                ybuffer[i] = 2*expsigma1d[i]*cosomega1d[i]*ybuffer1[i]-expsigma1d[i]*ybuffer2[i]-xbuf0/omega1d[i]+expsigma1d[i]*xbuf1*cosomega1d[i]/omega1d[i];
+                h+=ybuffer[i];
+                
+            }
+            if(xbuf0 !=0) {maxh = h;}
+            //if(xbuf0 != 0) {std::cout<<"h "<<h<<" "<<xbuf0<<"\n";}
+            //update buffers
+            ybuffer2 = ybuffer1;
+            ybuffer1 = ybuffer;
+            xbuf1 = xbuf0;
+            xbuf0 = 0.0;
+            //std::cout<<"h "<<h<<" "<<xbuffer[2]<<" "<<xbuffer[0]<<"  "<<ybuffer[2]<<" "<<ybuffer[1]<<" "<<ybuffer[0]<<"\n";
+            //std::cout<<"ybuffer1"<<" "<<ybuffer1[0]<<" "<<ybuffer1[1]<<" "<<ybuffer[2]<<"\n";
+            //std::cout<<"omega "<<omega1d[0]<<" "<<omega1d[1]<<" "<<omega1d[2]<<" "<<omega[3]<<"\n";
+            //std::cout<<"output 1d "<<h/maxh<<" "<<maxh<<"\n";
+        }
+        //3-D
+        else
+        {
+            for(int i=0;i<m1;i++)
+            {
+                for(int j=0;j<m2;j++)
+                {
+                    for(int m=0;m<m3;m++)
+                    {
+                        if(nsamp==0){
+                            decayampn3[i*m1+j*m2+m]=decayamp3[i*m1+j*m2+m];
+                        }
+                        else{
+                            decayampn3[i*m1+j*m2+m]*=decayamp3[i*m1+j*m2+m];
+                        }
+                        h+=k3d[i*m1+j*m2+m]*decayampn3[i*m2+j*m2+m]*sin(omega3d[i*m1+j*m2+m]*t);
+                    }
+                }
+                
+            }
+        }
+        //scale the output
+        output=h/maxh;
+        //output = h/1.0;
+        if(trig!=0)//if note is pressed, start counting time samples
+        {
+            t+=1/sr;//t advancing one sample
+            nsamp+=1;
+        }
+       // std::cout<<"output "<<h<<" "<<output<<"\n";
+        return double(output);
+      
+    }
     //==================================
     void pitchWheelMoved (int newPitchWheelValue)
     {
@@ -503,19 +517,16 @@ public:
     void renderNextBlock (AudioBuffer< float > &outputBuffer, int startSample, int numSamples)
     {
         //callback function
-        
-        
+
         for(int sample=0;sample<numSamples;++sample)
         {
             
             //put the synthesized drum sound here
             double drumSound=finaloutput(sample);
-            std::cout<<"drumSound "<<drumSound<<"\n";
+            //if(drumSound!=0){std::cout<<"drumSound "<<drumSound<<"\n";}
             for(int channel=0;channel<outputBuffer.getNumChannels();++channel)
             {
-                
-                outputBuffer.addSample(channel,  startSample, drumSound );//put whatever sound synethesized here.
-                
+                outputBuffer.addSample(channel,  startSample, drumSound );//put whatever sound synthesized here.
             }
             ++startSample;
         }
@@ -623,11 +634,19 @@ private:
     
     
     //circular buffers! [t,t-1,t-2]
-    float ybuffer[3] = {0.0, 0.0, 0.0};
-    float xbuffer[3] = {0.5, 0.0, 0.0};
+    //std::array<float,MAX_M1> A = {10,20,30,40};
+    //std::array<int,4> B = A; //copy array A into array B
+    
+    std::array<float,MAX_M1> ybuffer;
+    std::array<float,MAX_M1> ybuffer1;
+    std::array<float,MAX_M1> ybuffer2;
+    //float ybuffer1[MAX_M1];
+    //float ybuffer2[MAX_M1];
+    //float xbuffer[3] = {1.0, 0.0, 0.0};
+    float xbuf0,xbuf1;
     //pointers for buffers!
-    int yread,ywrite;
-    int xread,xwrite;
+    //int yread,ywrite;
+    //int xread,xwrite;
     
     
     
