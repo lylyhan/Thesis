@@ -26,10 +26,10 @@ StringModelAudioProcessor::StringModelAudioProcessor()
 tree (*this,nullptr,"PARAMETERS",
 {   std::make_unique<AudioParameterFloat> ("tau", "tau", NormalisableRange<float> (0.0f,0.3f),0.07f),
     //std::make_unique<AudioParameterFloat> ("omega", "omega", NormalisableRange<float> (1256.0f,7539.0f),3509.0f),
-    std::make_unique<AudioParameterFloat> ("p", "p", NormalisableRange<float> (0.0f,100.0f),0.0f),
-    std::make_unique<AudioParameterFloat> ("dispersion", "dispersion", NormalisableRange<float> (0.0f,10.0f),0.06f),
-    std::make_unique<AudioParameterFloat> ("alpha1", "alpha1", NormalisableRange<float> (0.0f,5.0f),1.13f),
-    std::make_unique<AudioParameterFloat> ("alpha2", "alpha2", NormalisableRange<float> (0.0f,5.0f),1.13f),
+    std::make_unique<AudioParameterFloat> ("p", "p", NormalisableRange<float> (0.0001f,2.0f),0.0f),
+    std::make_unique<AudioParameterFloat> ("dispersion", "dispersion", NormalisableRange<float> (0.0001f,10.0f),0.06f),
+    std::make_unique<AudioParameterFloat> ("alpha1", "alpha1", NormalisableRange<float> (0.0001f,1.0f),1.13f),
+    std::make_unique<AudioParameterFloat> ("alpha2", "alpha2", NormalisableRange<float> (0.0001f,1.0f),1.13f),
     std::make_unique<AudioParameterInt> ("dimtype", "dimtype", 0,2,1)
 })
 {
