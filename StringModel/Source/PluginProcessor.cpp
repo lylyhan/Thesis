@@ -27,21 +27,25 @@ tree (*this,nullptr,"PARAMETERS",
 {   std::make_unique<AudioParameterFloat> ("tau", "tau", NormalisableRange<float> (0.0f,0.3f),0.07f),
     //std::make_unique<AudioParameterFloat> ("omega", "omega", NormalisableRange<float> (1256.0f,7539.0f),3509.0f),
     std::make_unique<AudioParameterFloat> ("p", "p", NormalisableRange<float> (0.0f,100.0f),0.0f),
+    std::make_unique<AudioParameterFloat> ("p", "p", NormalisableRange<float> (0.0f,0.35f),0.0f),
     std::make_unique<AudioParameterFloat> ("dispersion", "dispersion", NormalisableRange<float> (0.0f,10.0f),0.06f),
     std::make_unique<AudioParameterFloat> ("alpha1", "alpha1", NormalisableRange<float> (0.0f,5.0f),1.13f),
     std::make_unique<AudioParameterFloat> ("alpha2", "alpha2", NormalisableRange<float> (0.0f,5.0f),1.13f),
+    std::make_unique<AudioParameterFloat> ("alpha1", "alpha1", NormalisableRange<float> (0.01f,1.0f),0.5f),
+    std::make_unique<AudioParameterFloat> ("alpha2", "alpha2", NormalisableRange<float> (0.01f,1.0f),0.5f),
     std::make_unique<AudioParameterInt> ("dimtype", "dimtype", 0,2,1)
 })
 {
     mySynth.clearVoices();
     for(int i=0;i<3;i++){
+    for(int i=0;i<1;i++){
         
         mySynth.addVoice(new SynthVoice());
     }
     //clear and add sounds
     mySynth.clearSounds();
     mySynth.addSound(new SynthSound());
-    
+    mySynth.addSound(new SynthSound());
 }
 
 StringModelAudioProcessor::~StringModelAudioProcessor()
@@ -169,12 +173,15 @@ void StringModelAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBu
             
         }
         
+        
     }
     
     buffer.clear();
     MidiBuffer processedMidi;//can modify this processMidi and swap with the original midi
+    //MidiBuffer processedMidi;//can modify this processMidi and swap with the original midi
     
     MidiMessage m;
+    //MidiMessage m;
     
     mySynth.renderNextBlock(buffer, midiMessages , 0, buffer.getNumSamples());//which is the callback function
 }

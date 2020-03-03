@@ -16,6 +16,7 @@
 #include <algorithm>
 #include<array>
 #include <complex>
+#include <typeinfo>
 using namespace std;
 
 #define MAX_M1  5
@@ -38,7 +39,9 @@ public:
         //for each dimension, different algorithms are called
         
         ftau=float(*tau);
-        fomega=float(frequency/2/M_PI+1000);
+        fomega=float(frequency*4+2*M_PI*200);
+        //fomega=float(frequency);
+        //std::cout<<"frequency "<<frequency<<" "<<float(frequency/2/M_PI+1000)<<" "<<fomega<<"\n";
         fp=float(*p);
         fd=float(*dispersion);
         fa=float(*alpha1);
@@ -60,7 +63,7 @@ public:
         //1-D string
         if(dim==0){
             //need sigma, omega
-            /*
+            
             deff(1);
             getf(1);
             
@@ -68,11 +71,11 @@ public:
             getw1d();
             getK1d();
             findmax1d();
-            */
+        /*
             ///////////////////the difference eq implementation///////////////
             getsigma1d();
             getw1d();
-
+*/
             
         }
         //3-D drum
@@ -105,6 +108,7 @@ public:
         }
         maxh=h;
     }
+    
     void findmax1d()
     {
         float h=0;
@@ -117,6 +121,7 @@ public:
         }
         maxh=h;
     }
+    
     void findmax3d()
     {
         float h=0;
@@ -160,7 +165,9 @@ public:
         {
             sigma1d[i]=sigma1*(1+fp*(pow(i+1,2)-1));
             expsigma1d[i]=exp(sigma1d[i]/sr);
+            exp2sigma1d[i]=exp(2*sigma1d[i]/sr);
             decayamp1[i]=exp(sigma1d[i]/sr);
+            sigmasq1d[i]=sigma1d[i]*sigma1d[i];
         }
     }
     
@@ -340,7 +347,9 @@ public:
             
             float interm=pow(i+1,2);//M^2
             omega1d[i]= sqrt(pow(fd*fomega*interm,2)+interm*(pow(sigma*(1-fp),2)+pow(fomega,2)*(1-pow(fd,2)))-pow(sigma*(1-fp),2));
+            sinomega1d[i] = sin(omega1d[i]/sr);
             cosomega1d[i] = cos(omega1d[i]/sr);
+            omegasq1d[i] = omega1d[i]*omega1d[i];
             
             
         }
@@ -372,22 +381,25 @@ public:
         //the keyboard-voice activation interface, should write different excitation signals here.
         trig = 1;
         t=0;
+        setKeyDown(true);
         nsamp=0;
         level=velocity;
         //map keyboard to frequency
-        frequency= MidiMessage::getMidiNoteInHertz(midiNoteNumber);
-        //xbuffer[0]=1.0;
+        frequency= MidiMessage::getMidiNoteInHertz(midiNoteNumber,440);
+        //std::cout<<"midinote "<<midiNoteNumber<<"\n";
         xbuf0 = 1.0;
-        //std::cout<<"i hit "<<xbuffer[0]<<"\n";
-        
+        num_buffer = 0;
+        uplim = 1;
+        maxh2 = 1;
+       
     };
     
     //==================================
     void stopNote (float velocity, bool allowTailOff)
     {
-        allowTailOff=true;
-        
-        if(velocity ==0)//allow next note to come in
+        allowTailOff=false;
+        //trig = 0;
+        if(isKeyDown() ==0)//allow next note to come in
             t=0;
         clearCurrentNote();
         
@@ -395,7 +407,12 @@ public:
     //==================================
     bool isVoiceActive()
     {
-        
+        if(t<2*sr or isPlayingButReleased()==true){
+            return true;
+        }
+        else{
+            return false;
+        }
     };
     
     //this function synthesize signalvalue at each sample
@@ -421,44 +438,63 @@ public:
                     h+=k[i*m1+j]*decayampn[i*m1+j]*sin(omega[i*m1+j]*t);
                 }
             }
-            //std::cout<<"output 2d "<<h/maxh<<"\n";
+            
         }
         //1-D
         else if(dim==0)
         {
-            //maxh = 1.0;
-            //std::complex<float> imaginary(0,1);
-            /*
+            
              for(int i=0;i<m1;i++)
              {
-             if(nsamp==0){
-             decayampn1[i]=decayamp1[i];
+                 if(nsamp==0){
+                 decayampn1[i]=decayamp1[i];
+                 }
+                 else{
+                 decayampn1[i]*=decayamp1[i];
+                 }
+                 
+                h+=k1d[i]*decayampn1[i]*sin(omega1d[i]*t);
              }
-             else{
-             decayampn1[i]*=decayamp1[i];
-             }
-             
-             h+=k1d[i]*decayampn1[i]*sin(omega1d[i]*t);
-             }
-             */
+            //std::cout<<"output 1d "<<h/maxh<<" "<<t<<" "<<k1d[0]<<"\n";
             //this is the difference eq version of implementation
+            
+            
+            /*
+           
             for(int i=0;i<m1;i++)
             {
-                ybuffer[i] = 2*expsigma1d[i]*cosomega1d[i]*ybuffer1[i]-expsigma1d[i]*ybuffer2[i]-xbuf0/omega1d[i]+expsigma1d[i]*xbuf1*cosomega1d[i]/omega1d[i];
+                float a1 = c*c+sigmasq1d[i]-2*sigma1d[i]*c+omegasq1d[i];
+                float a2 = 2*omegasq1d[i] - 2*c*c + 2*sigmasq1d[i];
+                float a3 = c*c + sigmasq1d[i] + 2*c*sigma1d[i] + omegasq1d[i];
+               // ybuffer[i] = 2*expsigma1d[i]*cosomega1d[i]*ybuffer1[i]-exp2sigma1d[i]*ybuffer2[i]+expsigma1d[i]*xbuf1*sinomega1d[i]/omega1d[i];
+                ybuffer[i] = (xbuf0 + 2*xbuf1 + xbuf2 - a2*ybuffer1[i] - a3*ybuffer2[i])/a1;
                 h+=ybuffer[i];
                 
             }
-            if(xbuf0 !=0) {maxh = h;}
+            if(nsamp ==0){
+                firstgain=h;
+                maxh=firstgain;
+                std::cout<<"gain from function "<<maxh<<" "<<nsamp<<"\n";
+            }
+            if(nsamp<=20 and nsamp>=1 and isKeyDown()==true){
+                if(h>maxh){
+                    maxh = h;
+                    std::cout<<"gain from function "<<maxh<<" "<<nsamp<<"\n";
+                }
+            }
+            //if(xbuf1 !=0) {maxh = h;}//h*20;}
             //if(xbuf0 != 0) {std::cout<<"h "<<h<<" "<<xbuf0<<"\n";}
             //update buffers
             ybuffer2 = ybuffer1;
             ybuffer1 = ybuffer;
+            xbuf2 = xbuf1;
             xbuf1 = xbuf0;
             xbuf0 = 0.0;
-            //std::cout<<"h "<<h<<" "<<xbuffer[2]<<" "<<xbuffer[0]<<"  "<<ybuffer[2]<<" "<<ybuffer[1]<<" "<<ybuffer[0]<<"\n";
+            //std::cout<<"h "<<h<<" "<<ybuffer[2]<<" "<<ybuffer[1]<<" "<<ybuffer[0]<<"\n";
             //std::cout<<"ybuffer1"<<" "<<ybuffer1[0]<<" "<<ybuffer1[1]<<" "<<ybuffer[2]<<"\n";
             //std::cout<<"omega "<<omega1d[0]<<" "<<omega1d[1]<<" "<<omega1d[2]<<" "<<omega[3]<<"\n";
             //std::cout<<"output 1d "<<h/maxh<<" "<<maxh<<"\n";
+             */
         }
         //3-D
         else
@@ -481,15 +517,46 @@ public:
                 
             }
         }
+      
         //scale the output
-        output=h/maxh;
-        //output = h/1.0;
-        if(trig!=0)//if note is pressed, start counting time samples
-        {
-            t+=1/sr;//t advancing one sample
-            nsamp+=1;
+        //output=h/maxh;
+        /*
+        if(dim==0){
+            //let outputbuffer to scale the first batch of signal values
+            if(num_buffer == 1){output = h;}
+            else{
+                //once maxh is certain, scale it here
+                output = h/maxh;
+            }
+       
         }
-       // std::cout<<"output "<<h<<" "<<output<<"\n";
+        else{
+         */
+        output = h/maxh/2;
+        
+        //output = h/maxh2;
+        
+        if (trig==1){
+           //t advancing one sample
+            nsamp += 1;
+            t=nsamp/sr;
+            if(nsamp >= dur){
+                nsamp=0;
+                t=0;
+                setKeyDown(false);
+                trig = 0;
+            }
+        }
+       
+        
+        
+       
+        
+        //setKeyDown(false);
+        
+        
+       // std::cout<<"output  "<<output<<"\n";
+        //std::cout<<"nsamp "<<nsamp<<" playing "<<isKeyDown()<<" "<<maxh<<" output "<<output<<"\n";
         return double(output);
       
     }
@@ -517,21 +584,68 @@ public:
     void renderNextBlock (AudioBuffer< float > &outputBuffer, int startSample, int numSamples)
     {
         //callback function
-
+        //int startgain;
         for(int sample=0;sample<numSamples;++sample)
         {
             
             //put the synthesized drum sound here
             double drumSound=finaloutput(sample);
-            //if(drumSound!=0){std::cout<<"drumSound "<<drumSound<<"\n";}
+            /*
+            if(drumSound == firstgain and dim==0){
+                startgain = sample;
+                std::cout<<"which point in the buffer "<<startgain<<"\n";
+            }
+            */
+           // std::cout<<"drumSound "<<drumSound<<"\n";
             for(int channel=0;channel<outputBuffer.getNumChannels();++channel)
             {
                 outputBuffer.addSample(channel,  startSample, drumSound );//put whatever sound synthesized here.
             }
             ++startSample;
+            
         }
         
+        num_buffer+=1;
+        if(num_buffer == 1 and outputBuffer.getMagnitude(1,0,numSamples)>maxh){
+            //maxh = outputBuffer.getMagnitude(1,0,numSamples);
+            //outputBuffer.applyGain(0, startgain, 1, 1/maxh);
+           // std::cout<<"gain from outputbuffer "<<maxh<<"\n";
+        }
         
+        //std::cout<<"min signal "<<outputBuffer.getMagnitude(1, 0, numSamples)<<"\n";
+        /*
+        //count buffer since start note
+        num_buffer+=1;
+        //biggest value in the current buffer
+        auto gain = outputBuffer.getMagnitude(1,0,numSamples);
+        
+       //std::cout<<"before signal values "<<outputBuffer.getMagnitude(1,0,numSamples)<<" "<<num_buffer<<"\n";
+        
+        //in case buffer contains last note's content, only change from where the note starts.
+        //how to detect situations when first buffer is triggered before valid values are put into it
+        if(num_buffer==1 and outputBuffer.findMinMax(0, 0, numSamples).getLength()>1e-4){
+            scale = float(1.0)/gain;
+            maxh2 = gain;
+           
+            if(gain*scale<=1){
+               outputBuffer.applyGain(scale);
+            }
+            scale = 1;
+        }
+        //sometimes the biggest value appear in second buffer, then update scaling factor
+        else if(num_buffer==2 and outputBuffer.findMinMax(0, 0, numSamples).getLength()>1e-4){
+            scale = float(1.0)/gain;
+            maxh2 = gain;
+            if(gain*scale<=1){
+                 outputBuffer.applyGain(scale);
+            }
+            scale = 1;
+        }
+        
+        std::cout<<"num buffer "<<numSamples<<" "<< outputBuffer.getMagnitude(1,0,numSamples)<<"\n";
+       //see if range of buffer tells anything about if the excitation is initiated
+       //std::cout<<"signal values "<<outputBuffer.getMagnitude(1,0,numSamples)<<" "<<outputBuffer.findMinMax(0, 0, numSamples).getLength()<<" "<<num_buffer<<"\n";
+       */
         
     };
     //==================================
@@ -556,15 +670,9 @@ public:
         
     };
     //==================================
-    bool isKeyDown()
-    {
-        
-    };
+  
     //==================================
-    void setKeyDown(bool isNowDown)
-    {
-        
-    };
+  
     //==================================
     bool isPlayingButReleased()
     {
@@ -587,9 +695,13 @@ private:
     int trig;
     double output;
     double t;
+    int num_buffer;
+    int uplim=1;
+    float scale=1.0;
     int nsamp;
     double sr=44100;
     double sinlookup[62832];
+    int dur = 2*sr;
     float ftau;
     float fa;
     float fa2;
@@ -615,15 +727,21 @@ private:
     float k1d[MAX_M1];
     float omega3d[125];
     float omega1d[MAX_M1];
-   
+    float omegasq1d[MAX_M1];
+    float c = sr*2;
     float sigma3d[125];
     float sigma1d[MAX_M1];
     float expsigma1d[MAX_M1];
+    float exp2sigma1d[MAX_M1];
+    float sigmasq1d[MAX_M1];
+    float sinomega1d[MAX_M1];
     float cosomega1d[MAX_M1];
     float f1[5];//m1
     float f2[5];//m2
     float f3[5];//m3
-    float maxh;//the max of h for each set of parameters
+    float maxh;
+    float firstgain;
+    float maxh2=1;//the max of h for each set of parameters
     // float test[25];
     float fx1[301];//tau
     float fx2[301];
@@ -643,7 +761,7 @@ private:
     //float ybuffer1[MAX_M1];
     //float ybuffer2[MAX_M1];
     //float xbuffer[3] = {1.0, 0.0, 0.0};
-    float xbuf0,xbuf1;
+    float xbuf0,xbuf1,xbuf2;
     //pointers for buffers!
     //int yread,ywrite;
     //int xread,xwrite;
