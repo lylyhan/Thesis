@@ -18,7 +18,7 @@
 class Customize    : public Component
 {
 public:
-    Customize(StringModelAudioProcessor&);
+    Customize(StringModelAudioProcessor&,int mode);
     ~Customize();
     
     void paint (Graphics&) override;
@@ -27,28 +27,21 @@ public:
 
 private:
     Slider tauSlider;
-    //Slider omegaSlider;
-    Slider lSlider;
     Slider pSlider;
     Slider dispersionSlider;
     Slider alphaSlider;
     Slider alpha2Slider;
-    Slider rhoSlider;
-    Slider ASlider;
-    Slider TSlider;
+   
     
-    ComboBox dimMenu;
+    //ComboBox dimMenu;
     Label taulabel;
-    
-    //Label omegalabel;
-    Label llabel;
     Label plabel;
     Label dispersionlabel;
     Label alphalabel;
     Label alpha2label;
     Label dimlabel;
     Label title;
-    Label rholabel,Alabel,Tlabel;
+
     
     
     StringModelAudioProcessor& processor;

@@ -5,6 +5,9 @@
               pluginFormats="buildAU,buildVST3" companyName="THESIS">
   <MAINGROUP id="RvdlOT" name="StringModel">
     <GROUP id="{1E368382-AFE3-B851-6460-B81F306FAB88}" name="Source">
+      <FILE id="Uh13ax" name="Togglebutton.cpp" compile="1" resource="0"
+            file="Source/Togglebutton.cpp"/>
+      <FILE id="x5suzX" name="Togglebutton.h" compile="0" resource="0" file="Source/Togglebutton.h"/>
       <FILE id="Jqe2qa" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="UrgEKj" name="PluginProcessor.h" compile="0" resource="0"
@@ -18,6 +21,12 @@
       <FILE id="SnWXSu" name="SynthVoice.h" compile="0" resource="0" file="Source/SynthVoice.h"/>
       <FILE id="L1QUSV" name="theString.cpp" compile="1" resource="0" file="Source/theString.cpp"/>
       <FILE id="DRfynL" name="theString.h" compile="0" resource="0" file="Source/theString.h"/>
+      <FILE id="MIgLOv" name="stringOn.png" compile="0" resource="1" file="Source/stringOn.png"/>
+      <FILE id="IvXTdD" name="boxOff.png" compile="0" resource="1" file="Source/boxOff.png"/>
+      <FILE id="TVYZJk" name="drumOff.png" compile="0" resource="1" file="Source/drumOff.png"/>
+      <FILE id="QqBpQH" name="stringOff.png" compile="0" resource="1" file="Source/stringOff.png"/>
+      <FILE id="jAwQ4K" name="boxOn.png" compile="0" resource="1" file="Source/boxOn.png"/>
+      <FILE id="UFcegy" name="drumOn.png" compile="0" resource="1" file="Source/drumOn.png"/>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>

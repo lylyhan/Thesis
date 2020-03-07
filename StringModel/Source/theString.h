@@ -19,7 +19,7 @@ public:
     ~theString();
     void paint(Graphics& g) override;
     void resized() override;
-    void changeParameter(float tau, float p, float dispersion, float alpha, float alpha2,float length,float A, float rho, float T);
+    void changeParameter(float tau, float p, float dispersion, float alpha, float alpha2);
     
 private:
     Path myString;
