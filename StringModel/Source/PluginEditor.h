@@ -25,6 +25,7 @@ public:
 
     //==============================================================================
     void paint (Graphics&) override;
+    void buttonClicked(int seq);
     void resized() override;
 
 private:
@@ -35,11 +36,19 @@ private:
     //Customize cusGUI;
    // theString myString;
     Label title;
-    Customize* stringCUS;
-    Customize* drumCUS;
-    Customize* boxCUS;
+    Customize stringCUS;
+    Customize drumCUS;
+    Customize boxCUS;
+    //Customize* cusGUI;
+    DrawableButton stringButton;
+    DrawableButton drumButton;
+    DrawableButton boxButton;
+    Image background;
     TabbedComponent mode;
     ScopedPointer<AudioProcessorValueTreeState::ButtonAttachment> dimSelection;
+    ScopedPointer<AudioProcessorValueTreeState::ButtonAttachment> stringTree;
+    ScopedPointer<AudioProcessorValueTreeState::ButtonAttachment> drumTree;
+    ScopedPointer<AudioProcessorValueTreeState::ButtonAttachment> boxTree;
     Button* but;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StringModelAudioProcessorEditor)
 };

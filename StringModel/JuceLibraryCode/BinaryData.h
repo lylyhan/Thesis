@@ -8,6 +8,9 @@
 
 namespace BinaryData
 {
+    extern const char*   background_jpg;
+    const int            background_jpgSize = 63333;
+
     extern const char*   stringOn_png;
     const int            stringOn_pngSize = 43217;
 
@@ -27,7 +30,7 @@ namespace BinaryData
     const int            drumOn_pngSize = 42026;
 
     // Number of elements in the namedResourceList and originalFileNames arrays.
-    const int namedResourceListSize = 6;
+    const int namedResourceListSize = 7;
 
     // Points to the start of a list of resource names.
     extern const char* namedResourceList[];

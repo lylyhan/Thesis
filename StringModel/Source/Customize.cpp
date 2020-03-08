@@ -122,6 +122,15 @@ void Customize::paint (Graphics& g)
      */
     
    // g.fillAll (Colours::white);
+    cusSlider* cusRotarySliderlook = new cusSlider();
+    if(auto* newl = dynamic_cast<juce::LookAndFeel*> (cusRotarySliderlook))
+    {
+        tauSlider.setLookAndFeel(newl);
+        pSlider.setLookAndFeel(newl);
+        dispersionSlider.setLookAndFeel(newl);
+        alphaSlider.setLookAndFeel(newl);
+        alpha2Slider.setLookAndFeel(newl);
+    }
 }
 
 void Customize::resized()
@@ -131,15 +140,15 @@ void Customize::resized()
     //Rectangle<int> area=getLocalBounds();
     
     tauSlider.setBounds(74,32,100,100);
-    taulabel.setBounds(98,128,133,11);
+    taulabel.setBounds(98,133,133,11);
     pSlider.setBounds(186,105,100,100);
-    plabel.setBounds(197,202,133,11);
+    plabel.setBounds(197,207,133,11);
     dispersionSlider.setBounds(74,179,100,100);
-    dispersionlabel.setBounds(79,276,133,11);
+    dispersionlabel.setBounds(79,281,133,11);
     alphaSlider.setBounds(186,249,100,100);
-    alphalabel.setBounds(194,346,133,11);
+    alphalabel.setBounds(194,351,133,11);
     alpha2Slider.setBounds(74,323,100,100);
-    alpha2label.setBounds(90,416,133,11);
+    alpha2label.setBounds(90,421,133,11);
     //dimMenu.setBounds(0,1500,100,100);
 
   

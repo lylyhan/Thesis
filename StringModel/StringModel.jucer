@@ -5,9 +5,6 @@
               pluginFormats="buildAU,buildVST3" companyName="THESIS">
   <MAINGROUP id="RvdlOT" name="StringModel">
     <GROUP id="{1E368382-AFE3-B851-6460-B81F306FAB88}" name="Source">
-      <FILE id="Uh13ax" name="Togglebutton.cpp" compile="1" resource="0"
-            file="Source/Togglebutton.cpp"/>
-      <FILE id="x5suzX" name="Togglebutton.h" compile="0" resource="0" file="Source/Togglebutton.h"/>
       <FILE id="Jqe2qa" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="UrgEKj" name="PluginProcessor.h" compile="0" resource="0"
@@ -19,8 +16,8 @@
       <FILE id="GGXEv5" name="Customize.h" compile="0" resource="0" file="Source/Customize.h"/>
       <FILE id="dCh6Jz" name="SynthSound.h" compile="0" resource="0" file="Source/SynthSound.h"/>
       <FILE id="SnWXSu" name="SynthVoice.h" compile="0" resource="0" file="Source/SynthVoice.h"/>
-      <FILE id="L1QUSV" name="theString.cpp" compile="1" resource="0" file="Source/theString.cpp"/>
-      <FILE id="DRfynL" name="theString.h" compile="0" resource="0" file="Source/theString.h"/>
+      <FILE id="ybFIVA" name="cusSlider.h" compile="0" resource="0" file="Source/cusSlider.h"/>
+      <FILE id="hToUyG" name="background.jpg" compile="0" resource="1" file="Source/background.jpg"/>
       <FILE id="MIgLOv" name="stringOn.png" compile="0" resource="1" file="Source/stringOn.png"/>
       <FILE id="IvXTdD" name="boxOff.png" compile="0" resource="1" file="Source/boxOff.png"/>
       <FILE id="TVYZJk" name="drumOff.png" compile="0" resource="1" file="Source/drumOff.png"/>

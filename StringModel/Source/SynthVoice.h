@@ -33,11 +33,11 @@ public:
     
     //==================================
     //some function that grabs value from the slider, and then either returns or set the signal of my synethesized drum sound
-    void getcusParam(float* tau,float* omega,float* p,float* dispersion,float* alpha1,float* alpha2,float* dimtype)
+    void getcusParam(float* tau,float* omega,float* p,float* dispersion,float* alpha1,float* alpha2,float* dim1,float* dim2, float* dim3)
     {
         //this function fetch parameters from the customized GUI and calculate the corresponding parameters in order to synthesize the sound
         //for each dimension, different algorithms are called
-        
+        //std::cout<<"dimension!! "<<float(*dim1)<<" "<<float(*dim2)<<" "<<float(*dim3)<<"\n";
         ftau=float(*tau);
         fomega=float(frequency*4+2*M_PI*200);
         //fomega=float(frequency);
@@ -46,7 +46,18 @@ public:
         fd=float(*dispersion);
         fa=float(*alpha1);
         fa2=float(*alpha2);
-        dim=float(*dimtype);
+        
+        if(float(*dim1)==1){
+            dim = 0;
+        }
+        else if(float(*dim2)==1){
+            dim = 1;
+        }
+        else if(float(*dim3)==1){
+            dim = 2;
+        }
+        //std::cout<<"what dim "<<dim<<"\n";
+        //dim=float(*dimtype);
         //2-D drum
         if(dim==1){
             //set the three vectors - sigma, omega, K to use later
@@ -532,7 +543,7 @@ public:
         }
         else{
          */
-        output = h/maxh/2;
+        output = h/maxh/2.3;
         
         //output = h/maxh2;
         

@@ -29,7 +29,10 @@ tree (*this,nullptr,"PARAMETERS",
     std::make_unique<AudioParameterFloat> ("dispersion", "dispersion", NormalisableRange<float> (0.0f,10.0f),0.06f),
     std::make_unique<AudioParameterFloat> ("alpha1", "alpha1", NormalisableRange<float> (0.01f,1.0f),0.5f),
     std::make_unique<AudioParameterFloat> ("alpha2", "alpha2", NormalisableRange<float> (0.01f,1.0f),0.5f),
-    std::make_unique<AudioParameterInt> ("dimtype", "dimtype", 0,2,1)
+    //std::make_unique<AudioParameterInt> ("dimtype", "dimtype", 0,2,1),
+    std::make_unique<AudioParameterInt> ("dim1", "dim1", 0,1,0),
+     std::make_unique<AudioParameterInt> ("dim2", "dim2", 0,1,1),
+     std::make_unique<AudioParameterInt> ("dim3", "dim3", 0,1,0)
 })
 {
     mySynth.clearVoices();
@@ -165,7 +168,9 @@ void StringModelAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBu
                                  tree.getRawParameterValue("dispersion"),
                                  tree.getRawParameterValue("alpha1"),
                                  tree.getRawParameterValue("alpha2"),
-                                 tree.getRawParameterValue("dimtype"));
+                                 tree.getRawParameterValue("dim1"),
+                                 tree.getRawParameterValue("dim2"),
+                                 tree.getRawParameterValue("dim3"));
             
             
         }
