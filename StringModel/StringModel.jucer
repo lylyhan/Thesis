@@ -17,13 +17,15 @@
       <FILE id="dCh6Jz" name="SynthSound.h" compile="0" resource="0" file="Source/SynthSound.h"/>
       <FILE id="SnWXSu" name="SynthVoice.h" compile="0" resource="0" file="Source/SynthVoice.h"/>
       <FILE id="ybFIVA" name="cusSlider.h" compile="0" resource="0" file="Source/cusSlider.h"/>
-      <FILE id="hToUyG" name="background.jpg" compile="0" resource="1" file="Source/background.jpg"/>
       <FILE id="MIgLOv" name="stringOn.png" compile="0" resource="1" file="Source/stringOn.png"/>
+      <FILE id="zsNicZ" name="question3.png" compile="0" resource="1" file="../../../../Desktop/question3.png"/>
       <FILE id="IvXTdD" name="boxOff.png" compile="0" resource="1" file="Source/boxOff.png"/>
       <FILE id="TVYZJk" name="drumOff.png" compile="0" resource="1" file="Source/drumOff.png"/>
       <FILE id="QqBpQH" name="stringOff.png" compile="0" resource="1" file="Source/stringOff.png"/>
       <FILE id="jAwQ4K" name="boxOn.png" compile="0" resource="1" file="Source/boxOn.png"/>
       <FILE id="UFcegy" name="drumOn.png" compile="0" resource="1" file="Source/drumOn.png"/>
+      <FILE id="Q9Iy0s" name="Existence-Light.otf" compile="0" resource="1"
+            file="../../../NYU/THESIS/StringModel/Source/Existence-Light.otf"/>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>

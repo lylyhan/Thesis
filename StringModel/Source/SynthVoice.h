@@ -13,6 +13,7 @@
 #include "./SynthSound.h"
 //#include "maximilian.h"
 #include <math.h>       /* pow */
+#include <cmath>
 #include <algorithm>
 #include<array>
 #include <complex>
@@ -408,7 +409,7 @@ public:
     //==================================
     void stopNote (float velocity, bool allowTailOff)
     {
-        allowTailOff=false;
+        allowTailOff=true;
         //trig = 0;
         if(isKeyDown() ==0)//allow next note to come in
             t=0;
@@ -543,7 +544,7 @@ public:
         }
         else{
          */
-        output = h/maxh/2.3;
+        output = h/maxh/4;
         
         //output = h/maxh2;
         
@@ -596,18 +597,24 @@ public:
     {
         //callback function
         //int startgain;
+        
         for(int sample=0;sample<numSamples;++sample)
         {
             
             //put the synthesized drum sound here
             double drumSound=finaloutput(sample);
+            if(abs(lastsound-drumSound)>0.1){
+                drumSound=(lastsound+drumSound)/2;
+            }
+            lastsound = drumSound;
             /*
             if(drumSound == firstgain and dim==0){
                 startgain = sample;
                 std::cout<<"which point in the buffer "<<startgain<<"\n";
             }
             */
-           // std::cout<<"drumSound "<<drumSound<<"\n";
+            //std::cout<<"t "<<t<<" "<<getCurrentlyPlayingNote()<<"\n";
+            //std::cout<<"drumSound "<<drumSound<<"\n";
             for(int channel=0;channel<outputBuffer.getNumChannels();++channel)
             {
                 outputBuffer.addSample(channel,  startSample, drumSound );//put whatever sound synthesized here.
@@ -727,7 +734,7 @@ private:
     float k[MAX_M1*MAX_M2];//m1*m2
     float omega[25];
     float sigma[25];
-   
+    float lastsound=0;
     float decayamp1[MAX_M1];
     float decayampn1[MAX_M1];
     float decayamp[25];

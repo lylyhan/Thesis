@@ -33,8 +33,11 @@ private:
     // access the processor object that created it.
     StringModelAudioProcessor& processor;
 
-    //Customize cusGUI;
-   // theString myString;
+    
+    
+   
+    SharedResourcePointer <TooltipWindow> help;
+
     Label title;
     Customize stringCUS;
     Customize drumCUS;

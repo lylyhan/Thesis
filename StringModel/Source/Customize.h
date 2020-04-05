@@ -12,6 +12,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginProcessor.h"
 #include "cusSlider.h"
+//#include "mytoolwindow.h"
 //==============================================================================
 /*
  */
@@ -24,7 +25,7 @@ public:
     void paint (Graphics&) override;
     void resized() override;
     float getsliderval(int seq);
-
+ 
 private:
     Slider tauSlider;
     Slider pSlider;
@@ -32,6 +33,7 @@ private:
     Slider alphaSlider;
     Slider alpha2Slider;
    
+    ImageComponent helpComp;
     
     //ComboBox dimMenu;
     Label taulabel;
@@ -43,7 +45,7 @@ private:
     Label title;
 
     
-    
+   
     StringModelAudioProcessor& processor;
     
     ScopedPointer <AudioProcessorValueTreeState::SliderAttachment> tauTree;

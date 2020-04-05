@@ -15,27 +15,33 @@
 
 //==============================================================================
 Customize::Customize(StringModelAudioProcessor& p,int mode):
-processor(p)
+processor(p),helpComp("help")
 {
     // In your constructor, you should add any child components, and
     // initialise any special settings that your component needs.
-//setSize(JUCE_LIVE_CONSTANT(400),
-   //         JUCE_LIVE_CONSTANT(140));
+
+   
     
-    /*
-    dimMenu.addItem("String",1);
-    dimMenu.addItem("Drum", 2);
-    dimMenu.addItem("Box", 3);
-    dimMenu.setJustificationType(Justification::centred);
-    addAndMakeVisible(&dimMenu);
-    addAndMakeVisible(&dimlabel);
-    dimlabel.setText ("dimension", dontSendNotification);//(shape of drum)
-    dimlabel.attachToComponent (&dimMenu, true);
+   Image helpImg = ImageCache::getFromMemory(BinaryData::question3_png, BinaryData::question3_pngSize);
+         
+     helpComp.setImage(helpImg);
+    helpComp.setTooltip("Information\n This is a drum synth implemented with physical modeling. You may switch between the three available physical models - string, rectangular drum and cuboid box. Each of the knobs controls a combination of the underlying physical parameters, examined based on qualities of the sound produced.\n Sustain - short to long\n Roundness - harsh to round\n Inharmonicity - harmonic to inharmonic\n Drum squareness - elongated to square drum\n Box shape - flat to cubic box");
+     addAndMakeVisible(&helpComp);
     
-    dimSelection = new AudioProcessorValueTreeState::ComboBoxAttachment (processor.tree,"dimtype",dimMenu);
-    */
+
     
-  
+    
+    
+    
+    Font myFont = Font(Typeface::createSystemTypefaceFor(BinaryData::AmaticSCRegular_ttf,
+                                                  BinaryData::AmaticSCRegular_ttfSize));
+    Font myFont2 = Font(Typeface::createSystemTypefaceFor(BinaryData::ColabThi_otf,
+    BinaryData::ColabThi_otfSize));
+    myFont2.setBold(true);
+    Font myFont3 = Font(Typeface::createSystemTypefaceFor(BinaryData::ExistenceLight_otf,
+       BinaryData::ExistenceLight_otfSize));
+    
+    
     
     tauSlider.setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
     tauSlider.setRange(0.1f,5000.0f);
@@ -46,6 +52,8 @@ processor(p)
     addAndMakeVisible(&tauSlider);
     addAndMakeVisible (&taulabel);
     taulabel.setText ("Sustain", dontSendNotification);//(fundamental time constant)
+    // taulabel.setFont(myFont2);
+    
     //taulabel.attachToComponent (&tauSlider, false);
     
  
@@ -59,6 +67,7 @@ processor(p)
     addAndMakeVisible (&plabel);
     pSlider.setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox,true,0,0);
     plabel.setText ("Roundness", dontSendNotification);//(frequency dependent damping)
+    //plabel.setFont(myFont3);
     //plabel.attachToComponent (&pSlider, false);
     
 
@@ -81,7 +90,9 @@ processor(p)
         addAndMakeVisible(&alphaSlider);
         addAndMakeVisible (&alphalabel);
         alphaSlider.setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox,true,0,0);
-        alphalabel.setText ("Drum Shape", dontSendNotification);//(shape of drum)
+        alphalabel.setText ("Drum Squareness", dontSendNotification);//(shape of drum)
+        //std::cout<<"fonts "<<juce::Font::findAllTypefaceNames()[0]<<"\n";
+        //alphalabel.setFont(myFont);
         //alphalabel.attachToComponent (&alphaSlider, false);
         alphaTree= new AudioProcessorValueTreeState::SliderAttachment(processor.tree,"alpha",alphaSlider);
         if(mode == 3){
@@ -131,6 +142,8 @@ void Customize::paint (Graphics& g)
         alphaSlider.setLookAndFeel(newl);
         alpha2Slider.setLookAndFeel(newl);
     }
+    
+   
 }
 
 void Customize::resized()
@@ -146,9 +159,10 @@ void Customize::resized()
     dispersionSlider.setBounds(74,179,100,100);
     dispersionlabel.setBounds(79,281,133,11);
     alphaSlider.setBounds(186,249,100,100);
-    alphalabel.setBounds(194,351,133,11);
+    alphalabel.setBounds(180,353,131,13);
     alpha2Slider.setBounds(74,323,100,100);
-    alpha2label.setBounds(90,421,133,11);
+    alpha2label.setBounds(90,428,133,13);
+    helpComp.setBounds(3,449,143,23);
     //dimMenu.setBounds(0,1500,100,100);
 
   
@@ -179,4 +193,3 @@ float Customize::getsliderval(int seq)
 
     return 0;
 }
-
