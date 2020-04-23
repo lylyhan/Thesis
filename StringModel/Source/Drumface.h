@@ -1,31 +1,31 @@
 /*
   ==============================================================================
 
-    theString.h
-    Created: 23 Oct 2019 12:20:19pm
+    Drumface.h
+    Created: 10 Apr 2020 12:28:06pm
     Author:  Lily H
 
   ==============================================================================
 */
 
 #pragma once
+
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginProcessor.h"
 
-class theString : public Component
+class Drumface : public Component
 {
 public:
-    theString(StringModelAudioProcessor& p);
-    ~theString();
+    Drumface(StringModelAudioProcessor& p);
+    ~Drumface();
     void paint(Graphics& g) override;
     void resized() override;
-    void changeParameter(float tau, float p, float dispersion, float alpha, float alpha2,float omega, float length,float A);
-    
+    void changeParameter(float length,float alpha);
+    void mouseDown (const MouseEvent& e) override;
+    void clicked(int midiNote);
 private:
     ImageComponent helpButton;
-    Path myString;
-    //Rectangle<float> Mystring2;
+    float l1,l2;
     StringModelAudioProcessor& processor;
-    float l,diameter,S,T;
-    int Tr, Tg, Tb;
+    Rectangle<float> Drum;
 };

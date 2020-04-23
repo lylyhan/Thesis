@@ -8,8 +8,17 @@
 
 namespace BinaryData
 {
-    extern const char*   FFF_Tusj_ttf;
-    const int            FFF_Tusj_ttfSize = 1543648;
+    extern const char*   question2_png;
+    const int            question2_pngSize = 16962;
+
+    extern const char*   ButtonOn_png;
+    const int            ButtonOn_pngSize = 93263;
+
+    extern const char*   ButtonOff_png;
+    const int            ButtonOff_pngSize = 91950;
+
+    extern const char*   drumface_png;
+    const int            drumface_pngSize = 71059;
 
     extern const char*   Ubuntu_L_ttf;
     const int            Ubuntu_L_ttfSize = 415552;
@@ -21,7 +30,7 @@ namespace BinaryData
     const int            Amagro_bold_ttfSize = 54652;
 
     // Number of elements in the namedResourceList and originalFileNames arrays.
-    const int namedResourceListSize = 4;
+    const int namedResourceListSize = 7;
 
     // Points to the start of a list of resource names.
     extern const char* namedResourceList[];

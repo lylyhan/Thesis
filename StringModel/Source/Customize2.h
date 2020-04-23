@@ -1,32 +1,29 @@
 /*
   ==============================================================================
 
-    Customize.h
-    Created: 10 Oct 2019 10:02:42am
+    Customize2.h
+    Created: 10 Apr 2020 1:05:36pm
     Author:  Lily H
 
   ==============================================================================
 */
-#pragma once
 
+#pragma once
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginProcessor.h"
-#include "theString.h"
+#include "Drumface.h"
 //==============================================================================
 /*
  */
-class Customize    : public Component
+class Customize2    : public Component
 {
 public:
-    Customize(StringModelAudioProcessor&);
-    ~Customize();
+    Customize2(StringModelAudioProcessor&);
+    ~Customize2();
     
     void paint (Graphics&) override;
     void resized() override;
-    //float getsliderval(int seq);
-    void changeGUI(int dim);
     void playButtonClicked(int midiNote, bool isDown);
-   
 private:
     //Label title;
     
@@ -36,10 +33,9 @@ private:
     Slider pSlider;
     Slider dispersionSlider;
     Slider alphaSlider;
-    Slider alpha2Slider;
-    Slider ASlider;
 
-    DrawableButton playButton;
+
+    //DrawableButton playButton;
     Label taulabel;
     
     Label omegalabel;
@@ -47,12 +43,12 @@ private:
     Label plabel;
     Label dispersionlabel;
     Label alphalabel;
-    Label alpha2label;
+
  
-    Label title,sonic,physics;
-    Label Alabel;
+    Label title,sonic,physics,instruction;
+
     
-    theString myString;
+    Drumface myDrum;
     
     StringModelAudioProcessor& processor;
     
@@ -61,11 +57,10 @@ private:
     ScopedPointer <AudioProcessorValueTreeState::SliderAttachment> pTree;
     ScopedPointer <AudioProcessorValueTreeState::SliderAttachment> dispersionTree;
     ScopedPointer <AudioProcessorValueTreeState::SliderAttachment> alphaTree;
-    ScopedPointer <AudioProcessorValueTreeState::SliderAttachment> alpha2Tree;
     ScopedPointer<AudioProcessorValueTreeState::ComboBoxAttachment> dimSelection;
     ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> lengthTree;
-    ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> thicknessTree;
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Customize)
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Customize2)
 };
 
 

@@ -2,7 +2,7 @@
 
 <JUCERPROJECT id="ez6eyY" name="StringModel" projectType="audioplug" jucerVersion="5.4.5"
               pluginName="Stringmodel" pluginManufacturer="THESIS" pluginCharacteristicsValue="pluginIsSynth,pluginProducesMidiOut,pluginWantsMidiIn"
-              pluginFormats="buildAU,buildVST3" companyName="THESIS">
+              pluginFormats="buildAU,buildStandalone,buildVST3" companyName="THESIS">
   <MAINGROUP id="RvdlOT" name="StringModel">
     <GROUP id="{1E368382-AFE3-B851-6460-B81F306FAB88}" name="Source">
       <FILE id="Jqe2qa" name="PluginProcessor.cpp" compile="1" resource="0"
@@ -14,13 +14,20 @@
       <FILE id="eL5b01" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
       <FILE id="Y2PmRu" name="Customize.cpp" compile="1" resource="0" file="Source/Customize.cpp"/>
       <FILE id="GGXEv5" name="Customize.h" compile="0" resource="0" file="Source/Customize.h"/>
+      <FILE id="gy80TK" name="Customize2.cpp" compile="1" resource="0" file="Source/Customize2.cpp"/>
+      <FILE id="ChdTrp" name="Customize2.h" compile="0" resource="0" file="Source/Customize2.h"/>
       <FILE id="dCh6Jz" name="SynthSound.h" compile="0" resource="0" file="Source/SynthSound.h"/>
       <FILE id="SnWXSu" name="SynthVoice.h" compile="0" resource="0" file="Source/SynthVoice.h"/>
       <FILE id="L1QUSV" name="theString.cpp" compile="1" resource="0" file="Source/theString.cpp"/>
       <FILE id="DRfynL" name="theString.h" compile="0" resource="0" file="Source/theString.h"/>
+      <FILE id="PYdvqS" name="Drumface.cpp" compile="1" resource="0" file="Source/Drumface.cpp"/>
+      <FILE id="p4BV3v" name="Drumface.h" compile="0" resource="0" file="Source/Drumface.h"/>
     </GROUP>
     <GROUP id="{AE508F71-1310-BC3A-3C99-8B01504ECB48}" name="Assets">
-      <FILE id="BNFvyr" name="FFF_Tusj.ttf" compile="0" resource="1" file="../../../../Downloads/FFF-Tusj/FFF_Tusj.ttf"/>
+      <FILE id="kBhmVN" name="question2.png" compile="0" resource="1" file="../../../../Desktop/question2.png"/>
+      <FILE id="WZt28o" name="ButtonOn.png" compile="0" resource="1" file="../../../../Desktop/ButtonOn.png"/>
+      <FILE id="r3XDvX" name="ButtonOff.png" compile="0" resource="1" file="../../../../Desktop/ButtonOff.png"/>
+      <FILE id="pXLDH4" name="drumface.png" compile="0" resource="1" file="../../../../Desktop/drumface.png"/>
       <FILE id="xcpARq" name="Ubuntu_L.ttf" compile="0" resource="1" file="../../../../Downloads/ubuntu/Ubuntu_L.ttf"/>
       <FILE id="cmhH1U" name="Reey_Regular.otf" compile="0" resource="1"
             file="../../../../Downloads/reey/Reey_Regular.otf"/>

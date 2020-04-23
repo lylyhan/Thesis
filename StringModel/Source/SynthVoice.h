@@ -15,7 +15,7 @@
 #include <math.h>       /* pow */
 #include <algorithm>
 #include<array>
-
+//#include "./PluginProcessor.h"
 #define MAX_M1  5
 #define MAX_M2  5
 
@@ -30,18 +30,32 @@ public:
     
     //==================================
     //some function that grabs value from the slider, and then either returns or set the signal of my synethesized drum sound
-    void getcusParam(float* tau,float* omega,float* p,float* dispersion,float* alpha1,float* alpha2,float* dimtype)
+    
+    void setPosition(float a1,float a2)
+    {
+        r1 = a1;
+        r2 = a2;
+        //std::cout<<"elsewhere "<<r1<<" "<<r2<<"\n";
+    }
+    
+    void getcusParam(float* tau,float* omega,float* p,float* dispersion,float* alpha1,float* alpha2,int dimtype,float* length,float* thickness)
     {
         //this function fetch parameters from the customized GUI and calculate the corresponding parameters in order to synthesize the sound
         //for each dimension, different algorithms are called
-        
+        //std::cout<<"which dimension "<<dim<<"\n";
         ftau=float(*tau);
-        fomega=float(frequency/2/M_PI+1000);
+        fomega=float(*omega);
         fp=float(*p);
         fd=float(*dispersion);
         fa=float(*alpha1);
         fa2=float(*alpha2);
-        dim=float(*dimtype);
+        dim=dimtype;
+        //if(1-1/fp<0){lengthscale = 2*M_PI;}
+        //else{lengthscale = M_PI/sqrt(1-1/fp);}
+        l1 = float(*length); //length is from 0.2 to 0.8, so it's setting l to be less than its max allowed value
+        fthick = float(*thickness);
+
+        //std::cout<<"length "<<l1<<"\n";
         //2-D drum
         if(dim==1){
             //set the three vectors - sigma, omega, K to use later
@@ -187,7 +201,7 @@ public:
             }
         }
         //scale the output
-        output=h/maxh;
+        output=h/maxh/3;
         if(trig!=0)//if note is pressed, start counting time samples
         {
             t+=1/sr;//t advancing one sample
@@ -246,14 +260,14 @@ public:
         float l;
         int m;
         float integral;
-        float l1=M_PI;
-        float l2=fa*M_PI;
-        float l3=fa2*M_PI;
+        //float l1=M_PI;
+        float l2=fa*l1;
+        float l3=fa2*l1;
         if(which==1) {l=l1;m=m1;}
         else if(which==2) {l=l2;m=m2;}
         else{l=l3;m=m3;}
         float h=l/tau;
-        if(which==1)
+        if(which==1)//first side
         {
             for(int j=0;j<m;j++)
             {
@@ -266,7 +280,7 @@ public:
             }
             
         }
-        else if(which==2)
+        else if(which==2)//second side
         {
             for(int j=0;j<m;j++)
             {
@@ -278,7 +292,7 @@ public:
                 f2[j]=2*integral/l;
             }
         }
-        else
+        else//third side
         {
             for(int j=0;j<m;j++)
             {
@@ -292,7 +306,7 @@ public:
         }
     }
     
-    //define f(x) as a gaussian distribution with mean at the middle point l/2
+    //define f(x) as a gaussian distribution with mean at a customized point l*r1
     void deff(int which)
     {
         float s=0.4;//standard deviation
@@ -301,15 +315,16 @@ public:
             float h=M_PI/tau;
             for(int i=0;i<tau+1;i++)
             {
-                fx1[i]=( 1 / ( s * sqrt(2*M_PI) ) ) * exp( -0.5 * pow( (i*h-M_PI/2.0)/s, 2.0 ) );
+                fx1[i]=( 1 / ( s * sqrt(2*M_PI) ) ) * exp( -0.5 * pow( (i*h-M_PI*r1)/s, 2.0 ) );
             }
+           // std::cout<<"r1 "<<r1<<" "<<r2<<"\n";
         }
         else if(which==2)
         {
             float h=fa*M_PI/tau;
             for(int i=0;i<tau+1;i++)
             {
-                fx2[i]=( 1 / ( s * sqrt(2*M_PI) ) ) * exp( -0.5 * pow( (i*h-fa*M_PI/2.0)/s, 2.0 ) );
+                fx2[i]=( 1 / ( s * sqrt(2*M_PI) ) ) * exp( -0.5 * pow( (i*h-fa*M_PI*r2)/s, 2.0 ) );
             }
         }
         else
@@ -317,7 +332,7 @@ public:
             float h=fa*M_PI/tau;
             for(int i=0;i<tau+1;i++)
             {
-                fx3[i]=( 1 / ( s * sqrt(2*M_PI) ) ) * exp( -0.5 * pow( (i*h-fa*M_PI/2.0)/s, 2.0 ) );
+                fx3[i]=( 1 / ( s * sqrt(2*M_PI) ) ) * exp( -0.5 * pow( (i*h-fa2*M_PI/2.0)/s, 2.0 ) );
             }
         }
     }
@@ -325,11 +340,11 @@ public:
     //get coefficient k for the impulse response
     void getK()
     {
-        float l1=M_PI;
-        float l2=fa*M_PI;
-        float x1=l1/2;
-        float x2=l2/2;
-        
+        l1 = M_PI;
+        float l2=fa*l1;
+        float x1=l1*r1;
+        float x2=l2*r2;
+        //std::cout<<"in here?\n";
         for(int i=0;i<m1;i++)
         {
             for(int j=0;j<m2;j++)
@@ -341,7 +356,7 @@ public:
     }
     void getK1d()
     {
-        float l1=M_PI;
+        //float l1=M_PI;
         float x1=l1/2;
         
         
@@ -355,9 +370,9 @@ public:
     }
     void getK3d()
     {
-        float l1=M_PI;
-        float l2=fa*M_PI;
-        float l3=fa2*M_PI;
+        //float l1=M_PI;
+        float l2=fa*l1;
+        float l3=fa2*l1;
         float x1=l1/2;
         float x2=l2/2;
         float x3=l3/2;
@@ -481,6 +496,7 @@ public:
             
             //put the synthesized drum sound here
             double drumSound=finaloutput(sample);
+            //std::cout<<"drum Sound "<<drumSound<<"\n";
             
             for(int channel=0;channel<outputBuffer.getNumChannels();++channel)
             {
@@ -542,6 +558,7 @@ public:
     
     
 private:
+   // StringModelAudioProcessor& processor;
     double level;
     double frequency;
     int trig;
@@ -586,4 +603,8 @@ private:
     float fx3[301];
     //double drumSound[512];
     double gain;
+    float l1;
+    float fthick;
+    float lengthscale = M_PI;
+    float r1=0.5,r2=0.5;
 };

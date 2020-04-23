@@ -1,55 +1,47 @@
 /*
   ==============================================================================
 
-    Customize.cpp
-    Created: 10 Oct 2019 10:02:42am
+    Customize2.cpp
+    Created: 10 Apr 2020 1:05:36pm
     Author:  Lily H
 
   ==============================================================================
 */
 
-#include "Customize.h"
-
+#include "Customize2.h"
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "Customize.h"
 #include <math.h>
 //==============================================================================
-Customize::Customize(StringModelAudioProcessor& p):
-processor(p),playButton("play",DrawableButton::ButtonStyle::ImageStretched),myString(p)
+Customize2::Customize2(StringModelAudioProcessor& p):
+processor(p),myDrum(p)
 {
     // In your constructor, you should add any child components, and
     // initialise any special settings that your component needs.
     setSize(500,250);
-    addAndMakeVisible(myString);
+    addAndMakeVisible(myDrum);
     addAndMakeVisible(&title);
-   title.setText("This is a string",dontSendNotification);
-   
-   static Typeface::Ptr myType2 = Typeface::createSystemTypefaceFor(BinaryData::Amagro_bold_ttf,
-                                                               BinaryData::Amagro_bold_ttfSize);
-   Font* myFont2 = new Font(myType2);
-   myFont2->setSizeAndStyle(30, 2, 1.0, 0.0);
-   title.setFont(*myFont2);
-   
-   title.setColour(Label::ColourIds::textColourId , Colours::black);
-    
+       title.setText("This is a drum",dontSendNotification);
+       
+       static Typeface::Ptr myType2 = Typeface::createSystemTypefaceFor(BinaryData::Amagro_bold_ttf,
+                                                                   BinaryData::Amagro_bold_ttfSize);
+       Font* myFont2 = new Font(myType2);
+       myFont2->setSizeAndStyle(30, 2, 1.0, 0.0);
+       title.setFont(*myFont2);
+       
+       title.setColour(Label::ColourIds::textColourId , Colours::black);
     
     addAndMakeVisible(&sonic);
-    sonic.setText("Sonic Attributes",dontSendNotification);
-    addAndMakeVisible(&physics);
-    physics.setText("Physical Appearance Attributes",dontSendNotification);
+      sonic.setText("Sonic Attributes",dontSendNotification);
+      addAndMakeVisible(&physics);
+      physics.setText("Physical Appearance Attributes",dontSendNotification);
+      addAndMakeVisible(&instruction);
+          instruction.setText("Click anywhere on the drumface below!",dontSendNotification);
+          
+        
     
-    Path butoutline = Path();
-    butoutline.addRectangle(200, 200, 50, 50);
+    
+
     //playButton.setShape(butoutline, true, true, false);
-    std::unique_ptr<Drawable> buttonOff;
-    std::unique_ptr<Drawable> buttonOn;
-     
-     buttonOff = Drawable::createFromImageData(BinaryData::ButtonOff_png, BinaryData::ButtonOff_pngSize);
-     buttonOn = Drawable::createFromImageData(BinaryData::ButtonOn_png, BinaryData::ButtonOn_pngSize);
-    playButton.setClickingTogglesState(true);
-    playButton.setImages(buttonOn.get(), buttonOn.get(),buttonOff.get());
-    playButton.onStateChange = [this] {playButtonClicked(87,playButton.isDown());};
-    addAndMakeVisible(playButton);
 
     static Typeface::Ptr myType = Typeface::createSystemTypefaceFor(BinaryData::Ubuntu_L_ttf,
                                                                     BinaryData::Ubuntu_L_ttfSize);
@@ -94,27 +86,14 @@ processor(p),playButton("play",DrawableButton::ButtonStyle::ImageStretched),mySt
     lSlider.setRange(0.0f,500.0f);
     lSlider.setValue(300.0f);
     //lSlider.onValueChange = [this] {sanitycheck(0);};
-    addAndMakeVisible(&lSlider);
-    addAndMakeVisible (&llabel);
+   // addAndMakeVisible(&lSlider);
+    //addAndMakeVisible (&llabel);
     llabel.setText ("Length", dontSendNotification);//(frequency dependent damping)
     llabel.attachToComponent (&lSlider, true);
     llabel.setFont(*myFont);
     llabel.setColour(Label::ColourIds::textColourId , Colours::black);
    
-    
 
-    
-    ASlider.setSliderStyle(Slider::SliderStyle::LinearHorizontal);
-    ASlider.setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox , true, 0, 0);
-    ASlider.setRange(10.0f,100.0f);
-    ASlider.setValue(10.0f);
-    addAndMakeVisible(&ASlider);
-    addAndMakeVisible (&Alabel);
-    Alabel.setText ("Thickness", dontSendNotification);//(frequency dependent damping)
-    Alabel.attachToComponent (&ASlider, true);
-    Alabel.setFont(*myFont);
-    Alabel.setColour(Label::ColourIds::textColourId , Colours::black);
-    
   
     dispersionSlider.setSliderStyle(Slider::SliderStyle::LinearHorizontal);
     dispersionSlider.setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox , true, 0, 0);
@@ -128,41 +107,32 @@ processor(p),playButton("play",DrawableButton::ButtonStyle::ImageStretched),mySt
 
     alphaSlider.setSliderStyle(Slider::SliderStyle::LinearHorizontal);
     alphaSlider.setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox , true, 0, 0);
-    alphalabel.setText ("Alpha1", dontSendNotification);//(shape of drum)
+    alphalabel.setText ("Side length Ratio", dontSendNotification);//(shape of drum)
     alphalabel.attachToComponent (&alphaSlider, true);
     alphalabel.setFont(*myFont);
     alphalabel.setColour(Label::ColourIds::textColourId , Colours::black);
     
-    alpha2Slider.setSliderStyle(Slider::SliderStyle::LinearHorizontal);
-    alpha2Slider.setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox , true, 0, 0);
-    alpha2label.setText ("Alpha2", dontSendNotification);//(shape of drum)
-    alpha2label.attachToComponent (&alpha2Slider, true);
-    alpha2label.setFont(*myFont);
-    alpha2label.setColour(Label::ColourIds::textColourId , Colours::black);
 
     
-    //addAndMakeVisible(&alphaSlider);
-    //addAndMakeVisible (&alphalabel);
-    //addAndMakeVisible(&alpha2Slider);
-    //addAndMakeVisible (&alpha2label);
+    addAndMakeVisible(&alphaSlider);
+    addAndMakeVisible (&alphalabel);
+
   
-    //dimSelection = new AudioProcessorValueTreeState::ComboBoxAttachment (processor.tree,"dimtype",dimMenu);
+    
     tauTree= new AudioProcessorValueTreeState::SliderAttachment(processor.tree,"tau",tauSlider);//this class maintains a connection between slider and parameter in apvts
-   omegaTree= new AudioProcessorValueTreeState::SliderAttachment(processor.tree,"omega",omegaSlider);
+    omegaTree= new AudioProcessorValueTreeState::SliderAttachment(processor.tree,"omega",omegaSlider);
     pTree= new AudioProcessorValueTreeState::SliderAttachment(processor.tree,"p",pSlider);
     dispersionTree= new AudioProcessorValueTreeState::SliderAttachment(processor.tree,"dispersion",dispersionSlider);
     alphaTree= new AudioProcessorValueTreeState::SliderAttachment(processor.tree,"alpha1",alphaSlider);
-    alpha2Tree= new AudioProcessorValueTreeState::SliderAttachment(processor.tree,"alpha2",alpha2Slider);
     lengthTree= new AudioProcessorValueTreeState::SliderAttachment(processor.tree,"length",lSlider);
-     thicknessTree= new AudioProcessorValueTreeState::SliderAttachment(processor.tree,"thickness",ASlider);
-    
+
 }
 
-Customize::~Customize()
+Customize2::~Customize2()
 {
 }
 
-void Customize::paint (Graphics& g)
+void Customize2::paint (Graphics& g)
 {
     /* This demo code just fills the component's background and
      draws some placeholder text to get you started.
@@ -172,47 +142,15 @@ void Customize::paint (Graphics& g)
      */
 
   
-    myString.changeParameter(tauSlider.getValue(),
-                             pSlider.getValue(),
-                             dispersionSlider.getValue(),
-                             alphaSlider.getValue(),
-                             alpha2Slider.getValue(),
-                             omegaSlider.getValue(),
-                             lSlider.getValue(),
-                             ASlider.getValue());
-    myString.repaint();
-    processor.dim = 0;
-    
-}
-void Customize::changeGUI(int dim)
-{
-    if(dim == 1)
-    {
-        //std::cout<<"dimension? "<<dim<<"\n";
-        addAndMakeVisible(&alphaSlider);
-        addAndMakeVisible (&alphalabel);
-        alpha2Slider.setVisible(false);
-        alpha2label.setVisible(false);
-    }
-    else if (dim == 2)
-    {
-        addAndMakeVisible(&alpha2Slider);
-        addAndMakeVisible (&alpha2label);
-        alphaSlider.setVisible(false);
-        alphalabel.setVisible(false);
-    }
-    else if (dim == 0)
-    {
-        alphaSlider.setVisible(false);
-        alphalabel.setVisible(false);
-        alpha2Slider.setVisible(false);
-        alpha2label.setVisible(false);
-    }
-    
+    myDrum.changeParameter(lSlider.getValue(),
+                           alphaSlider.getValue());
+    myDrum.repaint();
+    processor.dim = 1;
     
 }
 
-void Customize::resized()
+
+void Customize2::resized()
 {
     // This method is where you should set the bounds of any child
     // components that your component contains..
@@ -222,29 +160,24 @@ void Customize::resized()
     omegaSlider.setBounds(79,top+20,150,20);
     pSlider.setBounds(79,top+40,150,20);
     dispersionSlider.setBounds(79,top+60,150,20);
-    playButton.setBounds(270,171,50,50);
-    //alphaSlider.setBounds(100,60,300,20);
-    //alpha2Slider.setBounds(100,80,300,20);
-   // dimMenu.setBounds(358,0,150,20);
+   
+    //lSlider.setBounds(358,top,150,20);
+    alphaSlider.setBounds(358,top+20,150,20);
     
-    title.setBounds(178,16,242,32);
     sonic.setBounds(79,42,170,40);
     physics.setBounds(361,42,226,42);
-    lSlider.setBounds(358,top,150,20);
-    //rhoSlider.setBounds(358,top+20,150,20);
-    ASlider.setBounds(358,top+40,150,20);
-    //TSlider.setBounds(358,top+60,150,20);
+    instruction.setBounds(178,163,253,34);
+    title.setBounds(178,16,242,32);
     
-    myString.setBounds(10,226,573,200);
-    //alphaSlider.setBounds(358,120,150,20);
-    //alpha2Slider.setBounds(358,140,150,20);
-
+    myDrum.setBounds(10,206,573,200);
+    
+   
         
 }
 
 
 
-void Customize::playButtonClicked(int midiNote,bool isDown)
+void Customize2::playButtonClicked(int midiNote,bool isDown)
 {
     if(isDown){
         processor.mySynth.noteOn(1,midiNote,120);

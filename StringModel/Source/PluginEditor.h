@@ -13,7 +13,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginProcessor.h"
 #include "Customize.h"
-#include "theString.h"
+#include "Customize2.h"
 //==============================================================================
 /**
 */
@@ -26,14 +26,15 @@ public:
     //==============================================================================
     void paint (Graphics&) override;
     void resized() override;
-
+    TabbedComponent tabmode;
+    SharedResourcePointer <TooltipWindow> help;
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     StringModelAudioProcessor& processor;
-
+    
     Customize cusGUI;
-    theString myString;
-    Label title;
+    Customize2 cusGUI2;
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StringModelAudioProcessorEditor)
 };

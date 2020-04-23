@@ -24,17 +24,20 @@ StringModelAudioProcessor::StringModelAudioProcessor()
                        ),
 #endif
 tree (*this,nullptr,"PARAMETERS",
-{   std::make_unique<AudioParameterFloat> ("tau", "tau", NormalisableRange<float> (0.0f,0.3f),0.07f),
-    //std::make_unique<AudioParameterFloat> ("omega", "omega", NormalisableRange<float> (1256.0f,7539.0f),3509.0f),
-    std::make_unique<AudioParameterFloat> ("p", "p", NormalisableRange<float> (0.0001f,2.0f),0.0f),
-    std::make_unique<AudioParameterFloat> ("dispersion", "dispersion", NormalisableRange<float> (0.0001f,10.0f),0.06f),
-    std::make_unique<AudioParameterFloat> ("alpha1", "alpha1", NormalisableRange<float> (0.0001f,1.0f),1.13f),
+{   std::make_unique<AudioParameterFloat> ("tau", "tau", NormalisableRange<float> (0.01f,0.2f),0.07f),
+    std::make_unique<AudioParameterFloat> ("omega", "omega", NormalisableRange<float> (1256.0f,7539.0f),3509.0f),
+    std::make_unique<AudioParameterFloat> ("p", "p", NormalisableRange<float> (0.0001f,1.0f),0.0001f),
+    std::make_unique<AudioParameterFloat> ("dispersion", "dispersion", NormalisableRange<float> (0.0001f,0.9f),0.06f),
+    std::make_unique<AudioParameterFloat> ("alpha1", "alpha1", NormalisableRange<float> (0.1f,1.0f),0.5f),
     std::make_unique<AudioParameterFloat> ("alpha2", "alpha2", NormalisableRange<float> (0.0001f,1.0f),1.13f),
-    std::make_unique<AudioParameterInt> ("dimtype", "dimtype", 0,2,1)
+    std::make_unique<AudioParameterInt> ("dimtype", "dimtype", 0,2,1),
+    std::make_unique<AudioParameterFloat> ("length", "length", NormalisableRange<float> (M_PI/2,2*M_PI),M_PI),
+    std::make_unique<AudioParameterFloat> ("thickness", "thickness", NormalisableRange<float> (0.5,3),1)
+    
 })
 {
     mySynth.clearVoices();
-    for(int i=0;i<3;i++){
+    for(int i=0;i<1;i++){
         
         mySynth.addVoice(new SynthVoice());
     }
@@ -164,7 +167,10 @@ void StringModelAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBu
                                  tree.getRawParameterValue("dispersion"),
                                  tree.getRawParameterValue("alpha1"),
                                  tree.getRawParameterValue("alpha2"),
-                                 tree.getRawParameterValue("dimtype"));
+                                 dim,
+                                 tree.getRawParameterValue("length"),
+                                 tree.getRawParameterValue("thickness"));
+                                 //tree.getRawParameterValue("dimtype"));
             
             
         }
