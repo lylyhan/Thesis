@@ -22,7 +22,7 @@ processor(p),helpComp("help")
 
    
     
-   Image helpImg = ImageCache::getFromMemory(BinaryData::question3_png, BinaryData::question3_pngSize);
+   Image helpImg = ImageCache::getFromMemory(BinaryData::question2_png, BinaryData::question2_pngSize);
          
      helpComp.setImage(helpImg);
     helpComp.setTooltip("Information\n This is a drum synth implemented with physical modeling. You may switch between the three available physical models - string, rectangular drum and cuboid box. Each of the knobs controls a combination of the underlying physical parameters, examined based on qualities of the sound produced.\n Sustain - short to long\n Roundness - harsh to round\n Inharmonicity - harmonic to inharmonic\n Drum squareness - elongated to square drum\n Box shape - flat to cubic box");
@@ -33,13 +33,12 @@ processor(p),helpComp("help")
     
     
     
-    Font myFont = Font(Typeface::createSystemTypefaceFor(BinaryData::AmaticSCRegular_ttf,
-                                                  BinaryData::AmaticSCRegular_ttfSize));
-    Font myFont2 = Font(Typeface::createSystemTypefaceFor(BinaryData::ColabThi_otf,
-    BinaryData::ColabThi_otfSize));
-    myFont2.setBold(true);
-    Font myFont3 = Font(Typeface::createSystemTypefaceFor(BinaryData::ExistenceLight_otf,
-       BinaryData::ExistenceLight_otfSize));
+    //Font myFont = Font(Typeface::createSystemTypefaceFor(BinaryData::AmaticSCRegular_ttf, BinaryData::AmaticSCRegular_ttfSize));
+    //Font myFont2 = Font(Typeface::createSystemTypefaceFor(BinaryData::ColabThi_otf,
+   // BinaryData::ColabThi_otfSize));
+   // myFont2.setBold(true);
+    //Font myFont3 = Font(Typeface::createSystemTypefaceFor(BinaryData::ExistenceLight_otf,
+    //   BinaryData::ExistenceLight_otfSize));
     
     
     

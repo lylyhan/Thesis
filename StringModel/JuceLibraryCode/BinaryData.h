@@ -11,8 +11,8 @@ namespace BinaryData
     extern const char*   stringOn_png;
     const int            stringOn_pngSize = 43217;
 
-    extern const char*   question3_png;
-    const int            question3_pngSize = 18292;
+    extern const char*   question2_png;
+    const int            question2_pngSize = 16962;
 
     extern const char*   boxOff_png;
     const int            boxOff_pngSize = 50431;
