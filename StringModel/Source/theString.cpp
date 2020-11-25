@@ -61,7 +61,7 @@ void theString::changeParameter(float tau, float p, float dispersion, float alph
     d3 = -2*p/tau;
     c = sqrt((1-p*p)/pow(tau,2)+pow(omega,2)*(1-dispersion*dispersion));
     S = pow(pow(dispersion*omega,2)+pow(p/tau,2),0.25);
-    a = M_PI/length;
+    a = length/M_PI;
     //denormalize
     S = a * S / pow(A,1/4)/8;//this need to be below 10
     T = pow(a*c,2)*1e-6/227*114; //this need to be between 0 and 114
